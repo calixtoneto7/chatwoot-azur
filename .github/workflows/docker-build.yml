@@ -27,7 +27,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .                              # <- pasta que vai pro build
-          file: ./docker/Dockerfile    # <- caminho REAL do seu Dockerfile
+          context: ./docker          # <-- muda o contexto para a pasta onde está o Dockerfile
           push: true
           tags: ${{ secrets.IMAGE_NAME }}:latest
