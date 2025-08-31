@@ -3,13 +3,13 @@ name: Build & Push Chatwoot Image
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout source
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up QEMU
@@ -27,7 +27,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./docker/Dockerfile
+          context: .                              # <- pasta que vai pro build
+          file: ./docker/Dockerfile    # <- caminho REAL do seu Dockerfile
           push: true
           tags: ${{ secrets.IMAGE_NAME }}:latest
