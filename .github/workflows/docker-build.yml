@@ -24,10 +24,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push Docker image
-        uses: docker/build-push-action@v4
+      - name: Build and push
+        uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./docker/Dockerfile
           push: true
           tags: ${{ secrets.IMAGE_NAME }}:latest
-
