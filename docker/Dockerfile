@@ -85,12 +85,13 @@ RUN chmod +x /app/docker/entrypoints/*.sh && \
 # https://github.com/chatwoot/chatwoot/issues/701
 RUN mkdir -p /app/log
 
-# generate production assets if production environment
+# generate production assets if production environment (print full trace on failure)
 RUN if [ "$RAILS_ENV" = "production" ]; then \
-  SECRET_KEY_BASE=precompile_placeholder RAILS_LOG_TO_STDOUT=enabled bundle exec rake assets:precompile \
-  && rm -rf spec node_modules tmp/cache; \
+  SECRET_KEY_BASE=precompile_placeholder RAILS_LOG_TO_STDOUT=enabled bundle exec rake assets:precompile --trace \
+  || (echo "Assets precompile failed (see trace above)"; exit 1); \
+  rm -rf spec node_modules tmp/cache; \
   fi
-
+  
 # Generate .git_sha file with current commit hash
 RUN git rev-parse HEAD > /app/.git_sha
 
